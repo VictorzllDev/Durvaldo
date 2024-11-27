@@ -1,7 +1,7 @@
 import { Button } from './components/ui/button'
 import { Input } from './components/ui/input'
 
-function App() {
+export function App() {
 	return (
 		<main className="px-4 py-3">
 			<div className="flex gap-2">
@@ -13,5 +13,3 @@ function App() {
 		</main>
 	)
 }
-
-export default App
