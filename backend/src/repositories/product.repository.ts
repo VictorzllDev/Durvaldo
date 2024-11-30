@@ -7,6 +7,14 @@ import type {
 import { prisma } from '../utils/prisma-client'
 
 export class ProductRepository implements IProductRepository {
+	async findById(id: string): Promise<IProduct | null> {
+		return await prisma.product.findUnique({
+			where: {
+				id,
+			},
+		})
+	}
+
 	async save({ name, amount, description }: ICreateProduct): Promise<void> {
 		await prisma.product.createMany({
 			data: {
