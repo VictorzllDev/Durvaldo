@@ -1,7 +1,12 @@
 import fastify from 'fastify'
+import fastifyCors from '@fastify/cors'
 import { productRoutes } from './routes/product.routes'
 
 const app = fastify()
+
+app.register(fastifyCors, {
+	origin: '*',
+})
 
 app.register(productRoutes, {
 	prefix: '/product',
