@@ -1,21 +1,21 @@
-import fastify from 'fastify'
-import fastifyCors from '@fastify/cors'
-import { productRoutes } from './routes/product.routes'
+import fastify from "fastify";
+import fastifyCors from "@fastify/cors";
+import { productRoutes } from "./routes/product.routes";
 
-const app = fastify()
+const app = fastify();
 
 app.register(fastifyCors, {
-	origin: '*',
-})
+	origin: "*",
+});
 
 app.register(productRoutes, {
-	prefix: '/product',
-})
+	prefix: "/product",
+});
 
-app.listen({ port: 3333 }, (err, address) => {
+app.listen({ port: 3333, host: "0.0.0.0" }, (err, address) => {
 	if (err) {
-		console.log(err)
-		process.exit(1)
+		console.log(err);
+		process.exit(1);
 	}
-	console.log(`Run Server ${address}`)
-})
+	console.log(`Run Server ${address}`);
+});
