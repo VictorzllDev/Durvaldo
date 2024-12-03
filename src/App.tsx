@@ -19,7 +19,7 @@ import {
 	TableRow,
 } from '@/components/ui/table'
 import { DialogClose } from '@radix-ui/react-dialog'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { Header } from './components/Header'
 import { ThemeProvider } from './components/theme-provider'
 import { Button } from './components/ui/button'
@@ -27,7 +27,7 @@ import { Input } from './components/ui/input'
 import { Label } from './components/ui/label'
 import { createProductService } from './services/createProduct'
 import { getAllProductService } from './services/getAllProduct'
-import type { ICreateProduct, IProduct } from './types/IProduct'
+import type { IProduct } from './types/IProduct'
 import { updateProductService } from './services/updateProduct'
 import { deleteProductService } from './services/deleteProduct'
 
