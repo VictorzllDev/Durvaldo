@@ -1,3 +1,5 @@
+import { Toaster } from '@/components/ui/sonner'
+import { toast } from 'sonner'
 import {
 	Dialog,
 	DialogContent,
@@ -60,8 +62,11 @@ export function App() {
 			await getProducts()
 
 			setFormCreate({ name: '', description: '', amount: '' })
+
+			toast.success('Product create with Success!')
 		} catch (error) {
 			console.log(error)
+			toast.error('Error, Durvaldo deve saber')
 		}
 	}
 
@@ -76,8 +81,11 @@ export function App() {
 			await getProducts()
 
 			setFormUpdate({ description: '', amount: '' })
+
+			toast.success('Product update with Success!')
 		} catch (error) {
 			console.log(error)
+			toast.error('Error, Durvaldo deve saber')
 		}
 	}
 
@@ -85,8 +93,11 @@ export function App() {
 		try {
 			await deleteProductService(id)
 			await getProducts()
+
+			toast.success('Product delete with Success!')
 		} catch (error) {
 			console.log(error)
+			toast.error('Error, Durvaldo deve saber')
 		}
 	}
 
@@ -264,6 +275,7 @@ export function App() {
 						</DialogFooter>
 					</DialogContent>
 				</Dialog>
+				<Toaster position="top-right" />
 			</main>
 		</ThemeProvider>
 	)
