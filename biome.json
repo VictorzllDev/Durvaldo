@@ -7,7 +7,6 @@
 		"formatter": {
 			"semicolons": "asNeeded",
 			"quoteStyle": "single",
-			"trailingComma": "all",
 			"arrowParentheses": "always",
 			"bracketSpacing": true
 		}

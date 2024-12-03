@@ -1,15 +1,3 @@
-import { useRef, useState } from 'react'
-import { Button } from './components/ui/button'
-import { Input } from './components/ui/input'
-import {
-	Table,
-	TableBody,
-	TableCaption,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from '@/components/ui/table'
 import {
 	Dialog,
 	DialogContent,
@@ -19,13 +7,27 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '@/components/ui/dialog'
-import type { ICreateProduct, IProduct } from './types/IProduct'
-import { getAllProductService } from './services/getAllProduct'
-import { ThemeProvider } from './components/theme-provider'
-import { Header } from './components/Header'
-import { Label } from './components/ui/label'
+import {
+	Table,
+	TableBody,
+	TableCaption,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from '@/components/ui/table'
 import { DialogClose } from '@radix-ui/react-dialog'
+import { useRef, useState } from 'react'
+import { Header } from './components/Header'
+import { ThemeProvider } from './components/theme-provider'
+import { Button } from './components/ui/button'
+import { Input } from './components/ui/input'
+import { Label } from './components/ui/label'
 import { createProductService } from './services/createProduct'
+import { getAllProductService } from './services/getAllProduct'
+import type { ICreateProduct, IProduct } from './types/IProduct'
+import { updateProductService } from './services/updateProduct'
+import { deleteProductService } from './services/deleteProduct'
 
 export function App() {
 	const [products, setProducts] = useState<IProduct[] | null>(null)
@@ -34,6 +36,11 @@ export function App() {
 		description: string
 		amount: string
 	}>({ name: '', description: '', amount: '' })
+
+	const [formUpdate, setFormUpdate] = useState<{
+		description: string
+		amount: string
+	}>({ description: '', amount: '' })
 
 	const getProducts = async () => {
 		const products = await getAllProductService()
@@ -58,6 +65,31 @@ export function App() {
 		}
 	}
 
+	const handleUpdateProduct = async (id: string) => {
+		try {
+			const { description, amount } = formUpdate
+
+			if (!description) throw new Error('description invalid!')
+			if (!(Number(amount) >= 0)) throw new Error('amount invalid!')
+
+			await updateProductService(id, { description, amount: Number(amount) })
+			await getProducts()
+
+			setFormUpdate({ description: '', amount: '' })
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
+	const handleDeleteProduct = async (id: string) => {
+		try {
+			await deleteProductService(id)
+			await getProducts()
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
 	return (
 		<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
 			<Header />
@@ -70,6 +102,7 @@ export function App() {
 							<TableHead>Name</TableHead>
 							<TableHead>description</TableHead>
 							<TableHead className="">amount</TableHead>
+							<TableHead className="" />
 						</TableRow>
 					</TableHeader>
 					<TableBody>
@@ -79,6 +112,78 @@ export function App() {
 								<TableCell>{name}</TableCell>
 								<TableCell>{description}</TableCell>
 								<TableCell className="">{amount}</TableCell>
+								<TableCell className="space-x-2">
+									<Dialog>
+										<DialogTrigger asChild>
+											<Button variant="outline">Edit</Button>
+										</DialogTrigger>
+										<DialogContent className="sm:max-w-[425px]">
+											<DialogHeader>
+												<DialogTitle>Edit Product</DialogTitle>
+												<DialogDescription>
+													Make changes to your profile here. Click save when
+													you're done.
+												</DialogDescription>
+											</DialogHeader>
+											<form className="grid gap-4 py-4">
+												<div className="grid grid-cols-4 items-center gap-4">
+													<Label htmlFor="description" className="text-right">
+														Description
+													</Label>
+													<Input
+														id="description"
+														className="col-span-3"
+														onChange={(e) =>
+															setFormUpdate({
+																...formUpdate,
+																description: e.currentTarget.value,
+															})
+														}
+														defaultValue={description}
+													/>
+												</div>
+												<div className="grid grid-cols-4 items-center gap-4">
+													<Label htmlFor="amount" className="text-right">
+														Amount
+													</Label>
+													<Input
+														type="number"
+														id="amount"
+														className="col-span-3"
+														onChange={(e) =>
+															setFormUpdate({
+																...formUpdate,
+																amount: e.currentTarget.value,
+															})
+														}
+														defaultValue={amount}
+													/>
+												</div>
+											</form>
+											<DialogFooter>
+												<DialogClose asChild>
+													<Button type="button" variant="secondary">
+														Cancel
+													</Button>
+												</DialogClose>
+												<DialogClose>
+													<Button
+														type="submit"
+														onClick={() => handleUpdateProduct(id)}
+													>
+														Done!
+													</Button>
+												</DialogClose>
+											</DialogFooter>
+										</DialogContent>
+									</Dialog>
+									<Button
+										variant="destructive"
+										onClick={() => handleDeleteProduct(id)}
+									>
+										Delete
+									</Button>
+								</TableCell>
 							</TableRow>
 						))}
 					</TableBody>
