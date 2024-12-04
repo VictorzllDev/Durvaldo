@@ -122,7 +122,7 @@ export function App() {
 								<TableCell className="font-medium">{id}</TableCell>
 								<TableCell>{name}</TableCell>
 								<TableCell>{description}</TableCell>
-								<TableCell className="">{amount}</TableCell>
+								<TableCell className="">{amount.toLocaleString('pt-br',{style:'currency', currency:'BRL'})}</TableCell>
 								<TableCell className="space-x-2">
 									<Dialog>
 										<DialogTrigger asChild>
